@@ -16,31 +16,23 @@ function local(){
 }
 function localprod(){
     let dadosprod = [
-        {"id": 1, "nome": "gokuboneco", "preco": 69.99, "descricao": "actionfigure"},
-        {"id": 2, "nome": "majibooboneco", "preco": 19.99,"descricao": "actionfigure"},
-        {"id": 3, "nome": "frezzaboneco", "preco": 39.99,"descricao": "actionfigure"},
-        {"id": 4, "nome": "gohanboneco", "preco": 49.99,"descricao": "actionfigure"},
-        {"id": 5, "nome": "vegetaboneco", "preco": 69.99,"descricao": "actionfigure"},
-        {"id": 6, "nome": "piccoloboneco", "preco": 29.99,"descricao": "actionfigure"}
+        {"id": 1, "nome": "goku", "preco": 69.99, "descricao": "actionfigure"},
+        {"id": 2, "nome": "majinboo", "preco": 19.99,"descricao": "actionfigure"},
+        {"id": 3, "nome": "freeza", "preco": 39.99,"descricao": "actionfigure"},
+        {"id": 4, "nome": "gohan", "preco": 49.99,"descricao": "actionfigure"},
+        {"id": 5, "nome": "vegeta", "preco": 69.99,"descricao": "actionfigure"},
+        {"id": 6, "nome": "piccolo", "preco": 29.99,"descricao": "actionfigure"}
     ]
 
     let x = JSON.stringify(dadosprod)
     localStorage.setItem("prod", x)
-    tabelaprod();
     return dadosprod
 }
-function tabelaprod(){
-    let dados = JSON.parse(localStorage.getItem("prod"))
-    if (dados){
-        for (let i = 0; dados.length > i; i++){
-            document.querySelector("#produtonome").innerHTML = dados[i].nome
-            document.querySelector("#descricaoproduto").innerHTML = dados[i].descricao
-            document.querySelector("#preco").innerHTML = dados[i].preco
-        }
-    }   else {
-    localprod();
-    }
-}
+
+
+
+
+
 function logon(){
     const dados = JSON.parse(localStorage.getItem("tds"))
     let nome = document.querySelector("#nome").value
@@ -193,4 +185,130 @@ function limpar(){
 
 function voltar(){
     window.location.href = "loja.html"
+}
+
+let carrinho = []
+
+function esta_no_carrinho(id){
+    for(let i = 0; i < carrinho.length; i++){
+        let idcar = carrinho[i].id
+        if (idcar == id ){
+            alert("Produto já no carrinho")
+            return false
+        }
+    }
+    return true
+
+
+}
+
+function adicionarcarrinho(valor){
+    let produtos = JSON.parse(localStorage.getItem("prod"))
+    
+        for(let i = 0; produtos.length > i; i++){
+            let idcar = produtos[i].id
+            let nomecar = produtos[i].nome
+            let precocar = produtos[i].preco
+            if (idcar == valor && esta_no_carrinho(valor)){
+                carrinho.push({"id": idcar, "nome": nomecar, "preco": precocar, "totaluni": precocar })
+                alert("Produto adicionado ao carrinho")
+                
+                
+
+            }
+        }
+    document.querySelector("#itens").innerHTML = carrinho.length;
+    localStorage.setItem("car", JSON.stringify(carrinho));
+    
+
+    
+    
+    
+    
+}
+
+function calcularunicarrinho(id){
+    let car = JSON.parse(localStorage.getItem("car"))
+    
+    for(let i = 0; car.length > i; i++){
+        if (car[i].id == id){
+            let preco = document.querySelector(`#precodinamico${car[i].nome}`)
+            let quan = document.querySelector(`#quan${car[i].nome}`).value;
+            car[i]["totaluni"] = quan * car[i].preco;
+            preco.innerHTML = car[i]["totaluni"] = quan * car[i].preco;
+            break;
+
+
+        }
+    }
+    localStorage.setItem("car", JSON.stringify(car));
+    
+    
+    
+        
+        
+        
+    localStorage.setItem("car", JSON.stringify(car))
+}
+
+function exibircarrinho(){
+    let car = JSON.parse(localStorage.getItem("car"));
+    let ul = document.querySelector("#cart");
+    let totalexibi = document.querySelector("#total");
+    let total = 0
+
+    ul.innerHTML = "";
+    
+    for(let i = 0; car.length > i; i++){
+        let li = document.createElement('li');
+        li.id = `li${car[i].nome}`
+        li.innerHTML = 
+        `
+        <b>Produto:</b> ${car[i].nome} <b>Preço unidade:</b> ${car[i].preco.toFixed(2)} 
+        <b id="precodinamico${car[i].nome}">Preço: ${car[i].totaluni.toFixed(2)} 
+        Quantidade: <input type="number"  id="quan${car[i].nome}" class="quantidadeitens" onchange="calcularunicarrinho(${car[i].id}); exibircarrinho()"> 
+        <button type="button" class="btn btn-outline-danger my-2 my-sm-0" id="remover" onclick="removercarinho(${car[i].id}); exibircarrinho()">Remover carrinho</button>
+        `;
+        ul.appendChild(li);
+        
+
+    }
+    for(let i= 0; car.length > i; i++){
+        total += car[i].totaluni
+    }
+    totalexibi.innerHTML = `<b>Total:</b> R$ ${total.toFixed(2)}`
+    
+    
+
+}
+
+
+function removercarinho(id){
+    let car = JSON.parse(localStorage.getItem("car"));
+    let ul = document.querySelector("#cart")
+    for(let i = 0; car.length > i; i++){
+        if(car[i].id === id){
+            let li = document.getElementById(`li${car[i].nome}`);
+            ul.removeChild(li);
+            car.splice(i, 1);
+            localStorage.setItem("car", JSON.stringify(car))
+            break;
+
+
+        }
+    
+
+    }
+}
+
+function pix(){
+    let total = document.querySelector("#total").textContent
+    alert(`${total}`)
+    alert("CAIU NO URUBU DO PIX")
+}
+
+function cartao(){
+    let total = document.querySelector("#total").textContent
+    alert(`${total}`)
+    alert("Cartão Clonado")
 }

@@ -1,0 +1,31 @@
+#botaointerajir{
+    margin-right: 15px;
+}
+ 
+
+.quantidadeitens{
+    width: 48px;
+    height: 34px;
+    border-radius: 12px;
+    border: 2px solid #56c5db;
+    text-align: center;
+    background-color: #eee;
+}
+  
+
+.carrinho{
+  width: 40px;
+  height: 40px;
+  }
+#remover{
+  margin-left: 15px;
+  font-size: 12px; 
+  padding: 5px 10px; 
+  border-radius: 15px; 
+
+
+}
+.cart{
+  align-items: center;
+}
+
