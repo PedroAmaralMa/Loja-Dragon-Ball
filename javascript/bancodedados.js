@@ -304,11 +304,13 @@ function removercarinho(id){
 function pix(){
     let total = document.querySelector("#total").textContent
     alert(`${total}`)
+    window.prompt('Insira a Chave Pix')
     alert("CAIU NO URUBU DO PIX")
 }
 
 function cartao(){
     let total = document.querySelector("#total").textContent
     alert(`${total}`)
+    window.prompt('Insira a senha de seu cartão')
     alert("Cartão Clonado")
 }
